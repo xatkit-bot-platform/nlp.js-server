@@ -5,24 +5,37 @@ const nlpjsTrainer = require('./trainers/nlpjs-trainer')
 const app = express()
 const port = process.env.PORT || 4041
 
-app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
 
-app.get('/', (_,res) => {
-res.send("Welcome to the nlp.js-server")
+app.get('/', (_, res) => {
+    res.send("Welcome to the nlp.js-server")
 })
 
-app.post('/process', async (req, res) => {
-    const { userMessage } = req.body
-    const result = await nlpjsTrainer.process(userMessage)
-    res.json(result)
+app.post('/process', async (req, res, next) => {
+    try {
+        const { userMessage } = req.body
+        const result = await nlpjsTrainer.process(userMessage)
+        res.json(result)
+    }
+
+    catch (error) {
+        return next(error);
+    }
+
 })
 app.post('/train', async (req, res) => {
-    const data = req.body
-    const result = await nlpjsTrainer.train(data)
-    res.json(result)
+    try {
+        const data = req.body
+        const result = await nlpjsTrainer.train(data)
+        res.json(result)
+    }
+    catch (error) {
+        return next(error)
+    }
+
 })
 
 app.listen(port, () => {
