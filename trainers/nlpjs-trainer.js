@@ -9,7 +9,19 @@ class NlpjsTrainer {
 
     }
 
-
+    addEntities(manager, data) {
+        data.entities.forEach(entity => {
+            const {entityName } = entity
+            if(entity.type === 'enum') {
+                for (let i = 0; i < entity.examples.length; i++) {
+                    const optionName = entity.examples[i].value
+                    manager.addNamedEntityText(entityName, optionName,['en'], entity.examples[i].synonyms)
+                }
+            } else if (entity.type === 'regex') {
+                manager.addRegexEntity(entityName, ['en'], entity.regex)
+            }
+        })
+    }
 
 
     addIntents(manager, data) {
@@ -42,7 +54,7 @@ class NlpjsTrainer {
 
         const manager = new NlpManager({languages: ['en']})
 
-
+        this.addEntities(manager,data)
         this.addIntents(manager,data)
         const result = await this.trainProcess(manager.export());
         manager.import(result);
