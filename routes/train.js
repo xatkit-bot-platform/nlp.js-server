@@ -3,7 +3,7 @@ const router = express.Router()
 const nlpjsTrainer = require('../trainers/nlpjs-trainer')
 
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
         const data = req.body
         const result = await nlpjsTrainer.train(data)

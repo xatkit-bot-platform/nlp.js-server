@@ -1,32 +1,38 @@
-const { dockStart } = require('@nlpjs/basic')
+const { NlpManager } = require('node-nlp')
 const childProcess = require('child_process')
 
 class NlpjsTrainer {
 
     constructor() {
 
+        this.managers = {}
+
     }
 
 
-    addIntents(nlp, data) {
+
+
+    addIntents(manager, data) {
         data.intents.forEach(intent => {
             const { intentName } = intent
             for (let i = 0; i < intent.examples.length; i ++) {
                 const example = intent.examples[i];
                 const utterance = example.userSays;
-                nlp.addDocument('en', utterance, intentName);
+                manager.addDocument('en', utterance, intentName);
             }
         })
     }
 
-    trainProcess(nlp) {
+
+
+    trainProcess(manager) {
         return new Promise(resolve =>{
             const child = childProcess.fork('./trainers/nlpjs-process')
-            child.on('message', dockResult => {
+            child.on('message', managerResult => {
                 child.kill();
-                return resolve(dockResult)
+                return resolve(managerResult)
             })
-            child.send(nlp)
+            child.send(manager)
         })
 
     }
@@ -34,20 +40,19 @@ class NlpjsTrainer {
 
     async train(data) {
 
-        const dock = await dockStart({ use: ['Basic']});
+        const manager = new NlpManager({languages: ['en']})
 
-        const nlp = dock.get('nlp')
-        nlp.addLanguage('en')
-        this.addIntents(nlp,data)
-        const result = await this.trainProcess(nlp.export());
-        nlp.import(result);
-        this.nlpAgent = nlp
+
+        this.addIntents(manager,data)
+        const result = await this.trainProcess(manager.export());
+        manager.import(result);
+        this.manager = manager
         return result;
 
     }
 
     async process(text){
-        return await this.nlpAgent.process('en', text)
+        return await this.manager.process('en', text)
     }
 
 }
