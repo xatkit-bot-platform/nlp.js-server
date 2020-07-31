@@ -10,7 +10,7 @@ class NlpjsTrainer {
     }
 
     addEntities(manager, data) {
-        data.entities.forEach(entity => {
+        data.entities && data.entities.forEach(entity => {
             const {entityName } = entity
             if(entity.type === 'enum') {
                 for (let i = 0; i < entity.examples.length; i++) {
@@ -26,11 +26,18 @@ class NlpjsTrainer {
 
     addIntents(manager, data) {
         data.intents.forEach(intent => {
-            const { intentName } = intent
-            for (let i = 0; i < intent.examples.length; i ++) {
-                const example = intent.examples[i];
+            const { intentName, parameters, examples } = intent
+            for (let i = 0; i < examples.length; i ++) {
+                const example = examples[i];
                 const utterance = example.userSays;
                 manager.addDocument('en', utterance, intentName);
+            }
+            for(let i = 0; i < parameters.length; i++) {
+                const { slot, type } = parameters[i];
+                if (type === "any") {
+                    manager.addAfterLastCondition('en', slot, 'from');
+                }
+                manager.nlp.slotManager.addSlot(intentName, slot, true);
             }
         })
     }
@@ -59,6 +66,7 @@ class NlpjsTrainer {
         const result = await this.trainProcess(manager.export());
         manager.import(result);
         this.manager = manager
+        console.log(result)
         return result;
 
     }
