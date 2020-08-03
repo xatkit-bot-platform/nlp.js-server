@@ -39,7 +39,7 @@ class NlpjsTrainer {
 
 
     addIntents(manager, data) {
-        const language = agent.manager.settings.languages[0];
+        const language = manager.settings.languages[0];
         data.intents.forEach(intent => {
             const { intentName, parameters, examples } = intent
             for (let i = 0; i < examples.length; i ++) {
@@ -47,12 +47,14 @@ class NlpjsTrainer {
                 const utterance = example.userSays;
                 manager.addDocument(language, utterance, intentName);
             }
-            for(let i = 0; i < parameters.length; i++) {
-                const { slot, type } = parameters[i];
-                if (type === "any") {
-                    manager.addAfterLastCondition(language, slot, 'from');
+            if (parameters) {
+                for (let i = 0; i < parameters.length; i++) {
+                    const { slot } = parameters[i];
+                    // if (type === "any") {
+                    //     manager.addAfterLastCondition(language, slot, 'from');
+                    // }
+                    manager.nlp.slotManager.addSlot(intentName, slot, true);
                 }
-                manager.nlp.slotManager.addSlot(intentName, slot, true);
             }
         })
     }
