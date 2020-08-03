@@ -23,32 +23,34 @@ class NlpjsTrainer {
     }
 
     addEntities(manager, data) {
+        const language = manager.settings.languages[0];
         data.entities && data.entities.forEach(entity => {
             const {entityName } = entity
             if(entity.type === 'enum') {
                 for (let i = 0; i < entity.examples.length; i++) {
                     const optionName = entity.examples[i].value
-                    manager.addNamedEntityText(entityName, optionName,['en'], entity.examples[i].synonyms)
+                    manager.addNamedEntityText(entityName, optionName,[language], entity.examples[i].synonyms)
                 }
             } else if (entity.type === 'regex') {
-                manager.addRegexEntity(entityName, ['en'], entity.regex)
+                manager.addRegexEntity(entityName, [language], entity.regex)
             }
         })
     }
 
 
     addIntents(manager, data) {
+        const language = agent.manager.settings.languages[0];
         data.intents.forEach(intent => {
             const { intentName, parameters, examples } = intent
             for (let i = 0; i < examples.length; i ++) {
                 const example = examples[i];
                 const utterance = example.userSays;
-                manager.addDocument('en', utterance, intentName);
+                manager.addDocument(language, utterance, intentName);
             }
             for(let i = 0; i < parameters.length; i++) {
                 const { slot, type } = parameters[i];
                 if (type === "any") {
-                    manager.addAfterLastCondition('en', slot, 'from');
+                    manager.addAfterLastCondition(language, slot, 'from');
                 }
                 manager.nlp.slotManager.addSlot(intentName, slot, true);
             }
