@@ -11,6 +11,14 @@ class NlpjsTrainer {
 
     }
 
+    createAgent(agentId, language=DEFAULT_LANGUAGE) {
+        const manager = new NlpManager({languages: [language]})
+        this.managers[agentId] = {
+            manager,
+            status: 'new'
+        }
+    }
+
     addEntities(manager, data) {
         data.entities && data.entities.forEach(entity => {
             const {entityName } = entity

@@ -4,6 +4,16 @@ const nlpjsTrainer = require('../trainers/nlpjs-trainer')
 
 
 
+
+router.post('/agent', (req, res) => {
+    const data = req.body
+    if (!data.agentId) {
+       res.status(400).json({message: "Field agentId missing."}); return;
+    }
+    nlpjsTrainer.createAgent(data.agentId, data.language)
+    res.sendStatus(201)
+})
+
 router.post('/train', async (req, res, next) => {
     try {
         const data = req.body
