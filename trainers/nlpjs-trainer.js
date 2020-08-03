@@ -1,22 +1,25 @@
 const { NlpManager } = require('node-nlp')
 const childProcess = require('child_process')
 const { DEFAULT_LANGUAGE } = require('../config')
-const { v4: uuidv4 } = require('uuid');
 
 class NlpjsTrainer {
 
     constructor() {
 
-        this.managers = {}
+        this.agents = {}
 
     }
 
     createAgent(agentId, language=DEFAULT_LANGUAGE) {
         const manager = new NlpManager({languages: [language]})
-        this.managers[agentId] = {
+        this.agents[agentId] = {
             manager,
             status: 'new'
         }
+    }
+
+    getAgent(agentId) {
+        return this.agents[agentId]
     }
 
     addEntities(manager, data) {
@@ -67,19 +70,17 @@ class NlpjsTrainer {
     }
 
 
-    async train(data) {
+    async train(agentId, data) {
+        const agent = this.agents[agentId]
+        if(!agent)
+            return new Error("Not found")
 
-        const language = (data.config && data.config.language)? data.config.language : DEFAULT_LANGUAGE;
-        const agentId = (data.config && data.config.agentId)? data.config.agentId : uuidv4();
-        const manager = new NlpManager({languages: [language]})
-
-
-        this.managers[agentId] = manager
-
-        this.addEntities(manager,data)
-        this.addIntents(manager,data)
-        const result = await this.trainProcess(manager.export());
-        manager.import(result);
+        this.addEntities(agent.manager, data)
+        this.addIntents(agent.manager, data)
+        agent.status = 'training'
+        const result = await this.trainProcess(agent.manager.export());
+        agent.manager.import(result);
+        agent.status= 'trained'
         console.log(result)
         return result;
 
@@ -88,11 +89,11 @@ class NlpjsTrainer {
     process(agentId, text){
 
         return new Promise((resolve, reject) => {
-            const manager = this.managers[agentId]
-            if(!manager)
+            const agent = this.agents[agentId]
+            if(!agent)
                 return reject(`Not found`)
-            const language = manager.settings.languages[0];
-            return  resolve(manager.process(language, text))
+            const language = agent.manager.settings.languages[0];
+            return  resolve(agent.manager.process(language, text))
         })
     }
 

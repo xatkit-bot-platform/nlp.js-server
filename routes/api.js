@@ -14,10 +14,25 @@ router.post('/agent', (req, res) => {
     res.sendStatus(201)
 })
 
-router.post('/train', async (req, res, next) => {
+router.get('/agent/:agentId', (req, res) => {
+    const { agentId } = req.params
+    const agent = nlpjsTrainer.getAgent(agentId)
+    if(!agent)
+        res.status(404).json({message: `NLP agent with ID ${agentId} not found`})
+    else
+        res.json(manager)
+})
+
+router.post('/agent/:agentId/train', async (req, res, next) => {
     try {
+        const { agentId } = req.params
+        const agent = nlpjsTrainer.getAgent(agentId)
+        if(!agent) {
+            res.status(404).json({message: `NLP agent with ID ${agentId} not found`});
+            return;
+        }
         const data = req.body
-        const result = await nlpjsTrainer.train(data)
+        const result = await nlpjsTrainer.train(agentId, data)
         res.json(result)
     }
     catch (error) {
@@ -26,7 +41,7 @@ router.post('/train', async (req, res, next) => {
 
 })
 
-router.post('/:agentId/process', async (req, res, next) => {
+router.post('/agent/:agentId/process', async (req, res, next) => {
     const { agentId } = req.params
     const { userMessage } = req.body
     try {
