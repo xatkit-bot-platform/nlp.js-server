@@ -1,5 +1,7 @@
 const { NlpManager } = require('node-nlp')
 const childProcess = require('child_process')
+const { DEFAULT_LANGUAGE } = require('../config')
+const { v4: uuidv4 } = require('uuid');
 
 class NlpjsTrainer {
 
@@ -59,20 +61,31 @@ class NlpjsTrainer {
 
     async train(data) {
 
-        const manager = new NlpManager({languages: ['en']})
+        const language = (data.config && data.config.language)? data.config.language : DEFAULT_LANGUAGE;
+        const agentId = (data.config && data.config.agentId)? data.config.agentId : uuidv4();
+        const manager = new NlpManager({languages: [language]})
+
+
+        this.managers[agentId] = manager
 
         this.addEntities(manager,data)
         this.addIntents(manager,data)
         const result = await this.trainProcess(manager.export());
         manager.import(result);
-        this.manager = manager
         console.log(result)
         return result;
 
     }
 
-    async process(text){
-        return await this.manager.process('en', text)
+    process(agentId, text){
+
+        return new Promise((resolve, reject) => {
+            const manager = this.managers[agentId]
+            if(!manager)
+                return reject(`Not found`)
+            const language = manager.settings.languages[0];
+            return  resolve(manager.process(language, text))
+        })
     }
 
 }
