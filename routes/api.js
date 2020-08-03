@@ -23,7 +23,7 @@ router.get('/agent/:agentId', (req, res) => {
         res.json(manager)
 })
 
-router.post('/agent/:agentId/train', async (req, res, next) => {
+router.post('/agent/:agentId/train', (req, res, next) => {
     try {
         const { agentId } = req.params
         const agent = nlpjsTrainer.getAgent(agentId)
@@ -32,8 +32,8 @@ router.post('/agent/:agentId/train', async (req, res, next) => {
             return;
         }
         const data = req.body
-        const result = await nlpjsTrainer.train(agentId, data)
-        res.json(result)
+       nlpjsTrainer.train(agentId, data)
+        res.sendStatus(200)
     }
     catch (error) {
         return next(error)

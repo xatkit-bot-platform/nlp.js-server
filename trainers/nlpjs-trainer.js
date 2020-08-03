@@ -57,32 +57,31 @@ class NlpjsTrainer {
 
 
 
-    trainProcess(manager) {
-        return new Promise(resolve =>{
+    trainProcess(agent) {
+
+
+            agent.status = 'training'
             const child = childProcess.fork('./trainers/nlpjs-process')
             child.on('message', managerResult => {
                 child.kill();
-                return resolve(managerResult)
+                agent.manager.import(managerResult)
+                agent.status = 'ready'
+
             })
-            child.send(manager)
-        })
+            child.send(agent.manager.export())
+
 
     }
 
 
-    async train(agentId, data) {
+    train(agentId, data) {
         const agent = this.agents[agentId]
         if(!agent)
             return new Error("Not found")
 
         this.addEntities(agent.manager, data)
         this.addIntents(agent.manager, data)
-        agent.status = 'training'
-        const result = await this.trainProcess(agent.manager.export());
-        agent.manager.import(result);
-        agent.status= 'trained'
-        console.log(result)
-        return result;
+        this.trainProcess(agent);
 
     }
 
