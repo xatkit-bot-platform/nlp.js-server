@@ -43,9 +43,9 @@ router.post('/agent/:agentId/train', (req, res, next) => {
 
 router.post('/agent/:agentId/process', async (req, res, next) => {
     const { agentId } = req.params
-    const { userMessage } = req.body
+    const { message } = req.body
     try {
-        const result = await nlpjsTrainer.process(agentId,userMessage)
+        const result = await nlpjsTrainer.process(agentId,message)
         res.json(result)
     }
 
