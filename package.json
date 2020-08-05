@@ -1,7 +1,7 @@
 {
-  "name": "nlp.js-server",
+  "name": "xatkit-nlp.js-server",
   "version": "0.0.1",
-  "description": "A server exposing a REST API for NLP.js",
+  "description": "A REST API for NLP.js",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
