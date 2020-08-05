@@ -30,9 +30,9 @@ class NlpjsTrainer {
         data.entities && data.entities.forEach(entity => {
             const {entityName} = entity
             if (entity.type === 'enum') {
-                for (let i = 0; i < entity.literals.length; i++) {
-                    const optionName = entity.literals[i].value
-                    manager.addNamedEntityText(entityName, optionName, [language], entity.literals[i].synonyms)
+                for (let i = 0; i < entity.references.length; i++) {
+                    const optionName = entity.references[i].value
+                    manager.addNamedEntityText(entityName, optionName, [language], entity.references[i].synonyms)
                 }
             } else if (entity.type === 'regex') {
                 manager.addRegexEntity(entityName, [language], entity.regex)

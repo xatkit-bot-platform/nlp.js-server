@@ -73,7 +73,7 @@ paths:
               $ref: '#/components/schemas/TrainingData'
             examples:
               '0':
-                value: "{\r\n    \"config\": {\r\n        \"language\": \"en\"\r\n    },\r\n    \"entities\": [\r\n        {\"entityName\": \"PlanetEntity\",\r\n        \"type\": \"enum\",\r\n        \"literals\":[\r\n            {\"value\": \"Earth\", \"synonyms\": [\"Earth\"]},\r\n            {\"value\": \"Mars\", \"synonyms\": [\"Mars\"]}\r\n        ]}\r\n\r\n    ],\r\n    \"intents\": [\r\n     {\r\n     \"intentName\": \"HelloIntent\",\r\n     \"examples\": [\r\n           {\"userSays\": \"Hello from %PlanetEntity%\"}\r\n     ],\r\n    \"parameters\": [ {\r\n        \"slot\": \"PlanetEntity\"\r\n    }\r\n\r\n    ]}\r\n\r\n    ]\r\n\r\n}\r\n"
+                value: "{\r\n    \"config\": {\r\n        \"language\": \"en\"\r\n    },\r\n    \"entities\": [\r\n        {\"entityName\": \"PlanetEntity\",\r\n        \"type\": \"enum\",\r\n        \"references\":[\r\n            {\"value\": \"Earth\", \"synonyms\": [\"Earth\"]},\r\n            {\"value\": \"Mars\", \"synonyms\": [\"Mars\"]}\r\n        ]}\r\n\r\n    ],\r\n    \"intents\": [\r\n     {\r\n     \"intentName\": \"HelloIntent\",\r\n     \"examples\": [\r\n           {\"userSays\": \"Hello from %PlanetEntity%\"}\r\n     ],\r\n    \"parameters\": [ {\r\n        \"slot\": \"PlanetEntity\"\r\n    }\r\n\r\n    ]}\r\n\r\n    ]\r\n\r\n}\r\n"
       responses:
         '200':
           description: Training started
@@ -150,7 +150,7 @@ components:
     Entity:
       type: object
       properties:
-        literals:
+        references:
           type: array
           items:
             $ref: '#/components/schemas/EntityValue'
