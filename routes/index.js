@@ -3,7 +3,7 @@ const router = express.Router()
 
 
 router.get('/', (_, res) => {
-    res.send("Welcome to nlp.js-server")
+    res.send("Welcome to xatkit-nlp.js-server")
 })
 
 
