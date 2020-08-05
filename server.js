@@ -6,17 +6,17 @@ const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
 
 
-const app = express()
-const port = process.env.PORT || 4041
+const server = express()
+const port = process.env.PORT || 8000
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
-
-
-app.use('/', indexRouter)
-app.use('/api', apiRouter)
+server.use(bodyParser.urlencoded({extended: false}))
+server.use(bodyParser.json())
 
 
-app.listen(port, () => {
+server.use('/', indexRouter)
+server.use('/api', apiRouter)
+
+
+server.listen(port, () => {
     console.log("xatkit-nlp.js-server running on port", port)
 })
