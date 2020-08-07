@@ -2,13 +2,15 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 
+const swaggerUi = require('swagger-ui-express')
+const openApiDocumentation = require('./openapi.json')
 
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
 
 
 const server = express()
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8080
 
 server.use(bodyParser.urlencoded({extended: false}))
 server.use(bodyParser.json())
@@ -19,6 +21,8 @@ server.use('/api', apiRouter)
 server.use(methodOverride())
 server.use(logErrors)
 server.use(errorHandler)
+
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
 
 

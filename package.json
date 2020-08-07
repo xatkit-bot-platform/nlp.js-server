@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "node-nlp": "^4.9.3",
+    "swagger-ui-express": "^4.1.4",
     "uuid": "^8.3.0"
   }
 }
