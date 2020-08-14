@@ -169,7 +169,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecognizedIntent"
+                  "$ref": "#/components/schemas/RecognitionResult"
                 }
               }
             }
@@ -280,6 +280,9 @@
         "properties": {
           "agentId": {
             "type": "string"
+          },
+          "language": {
+            "type": "string"
           }
         }
       },
@@ -307,7 +310,7 @@
           }
         }
       },
-      "RecognizedIntent": {
+      "RecognitionResult": {
         "type": "object",
         "properties": {
           "local": {

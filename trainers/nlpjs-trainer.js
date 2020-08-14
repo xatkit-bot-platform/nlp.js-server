@@ -1,6 +1,8 @@
-const {NlpManager} = require('node-nlp')
+const { NlpManager } = require('node-nlp')
 const childProcess = require('child_process')
+
 const {DEFAULT_LANGUAGE} = require('../config')
+
 
 
 /*
@@ -11,6 +13,7 @@ class NlpjsTrainer {
 
     constructor() {
         this.agents = {}
+        this.createAgent("default")
     }
 
     createAgent(agentId, language = DEFAULT_LANGUAGE) {
@@ -73,16 +76,20 @@ class NlpjsTrainer {
 
 
     train(agentId, data) {
-        const agent = this.agents[agentId]
+        let agent = this.agents[agentId]
         if (!agent)
             return new Error("Not found")
+        const { language } = data.config
+        if (language && language !== agent.manager.settings.languages[0]) {
+            this.createAgent(agentId, language)
+            agent = this.agents[agentId]
+        }
         this.addEntities(agent.manager, data)
         this.addIntents(agent.manager, data)
         this.trainProcess(agent);
     }
 
     process(agentId, text) {
-
         return new Promise((resolve, reject) => {
             const agent = this.agents[agentId]
             if (!agent)

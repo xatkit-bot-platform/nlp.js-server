@@ -35,5 +35,5 @@ function logErrors (err, req, res, next) {
     next(err)
 }
 function errorHandler (err, req, res, next) {
-    res.status(err.status).json({ message: err.message })
+    res.status(500).json({ message: err.message })
 }
