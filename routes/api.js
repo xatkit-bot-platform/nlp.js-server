@@ -47,7 +47,8 @@ router.post('/agent/:agentId/process', async (req, res, next) => {
     } catch (error) {
         if (error === 'Not found')
             res.status(404).json({message: `NLP agent with ID ${agentId} not found`})
-        return next(error);
+        else
+            return next(error);
     }
 })
 
