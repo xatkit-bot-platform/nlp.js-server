@@ -56,7 +56,7 @@ class NlpjsTrainer {
             if (parameters) {
                 for (let i = 0; i < parameters.length; i++) {
                     const {slot} = parameters[i];
-                    manager.nlp.slotManager.addSlot(intentName, slot, true);
+                    manager.slotManager.addSlot(intentName, slot, true);
                 }
             }
         })
