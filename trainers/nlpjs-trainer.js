@@ -17,7 +17,7 @@ class NlpjsTrainer {
     }
 
     createAgent(agentId, language = DEFAULT_LANGUAGE) {
-        const manager = new NlpManager({languages: [language]})
+        const manager = new NlpManager({languages: [language], nlu: { useNoneFeature: false }})
         this.agents[agentId] = {
             manager,
             status: 'new'
