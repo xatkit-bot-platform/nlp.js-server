@@ -79,8 +79,8 @@ class NlpjsTrainer {
         let agent = this.agents[agentId]
         if (!agent)
             return new Error("Not found")
-        const { language } = data.config
-        if (language && language !== agent.manager.settings.languages[0]) {
+        const { language, clean } = data.config
+        if (clean || (language && language !== agent.manager.settings.languages[0])) {
             this.createAgent(agentId, language)
             agent = this.agents[agentId]
         }
