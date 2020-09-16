@@ -31,13 +31,21 @@ class NlpjsTrainer {
     addEntities(manager, data) {
         const language = manager.settings.languages[0];
         data.entities && data.entities.forEach(entity => {
-            const {entityName} = entity
+            const {entityName, type} = entity
             if (entity.type === 'enum') {
                 for (let i = 0; i < entity.references.length; i++) {
                     const optionName = entity.references[i].value
                     manager.addNamedEntityText(entityName, optionName, [language], entity.references[i].synonyms)
                 }
-            } else if (entity.type === 'regex') {
+            } else if (type === 'trim') {
+                const { afterLast, beforeLast } = entity
+                if (afterLast) {
+                    manager.addAfterLastCondition('en', entityName, afterLast);
+                }
+                if (beforeLast) {
+                    manager.addBeforeLastCondition('en', entityName, beforeLast)
+                }
+            } else if (type === 'regex') {
                 manager.addRegexEntity(entityName, [language], entity.regex)
             }
         })
