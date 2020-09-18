@@ -38,12 +38,16 @@ class NlpjsTrainer {
                     manager.addNamedEntityText(entityName, optionName, [language], entity.references[i].synonyms)
                 }
             } else if (type === 'trim') {
-                const { afterLast, beforeLast } = entity
-                if (afterLast) {
+                const { afterLast, beforeLast, between } = entity
+                if (afterLast && afterLast.length) {
                     manager.addAfterLastCondition('en', entityName, afterLast);
                 }
-                if (beforeLast) {
-                    manager.addBeforeLastCondition('en', entityName, beforeLast)
+                if (beforeLast && beforeLast.length) {
+                    manager.nlp.addNerBeforeLastCondition('en', entityName, beforeLast)
+                }
+                if ( between ) {
+                    const { left, right} = between
+                    manager.addBetweenCondition('en', entityName, left, right)
                 }
             } else if (type === 'regex') {
                 manager.addRegexEntity(entityName, [language], entity.regex)
