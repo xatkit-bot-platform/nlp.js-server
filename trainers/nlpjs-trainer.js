@@ -1,9 +1,6 @@
 const { NlpManager } = require('node-nlp')
 const childProcess = require('child_process')
-
-const {DEFAULT_LANGUAGE} = require('../config')
-
-
+const { DEFAULT_LANGUAGE } = require('../config')
 
 /*
  * Adapted from NlpjsTrainer class located at https://github.com/axa-group/nlp.js-app.
@@ -55,7 +52,6 @@ class NlpjsTrainer {
         })
     }
 
-
     addIntents(manager, data) {
         const language = manager.settings.languages[0];
         data.intents.forEach(intent => {
@@ -74,7 +70,6 @@ class NlpjsTrainer {
         })
     }
 
-
     trainProcess(agent) {
         agent.status = 'training'
         const child = childProcess.fork('./trainers/nlpjs-process')
@@ -86,13 +81,13 @@ class NlpjsTrainer {
         child.send(agent.manager.export())
     }
 
-
     train(agentId, data) {
         let agent = this.agents[agentId]
-        if (!agent)
-            return new Error("Not found")
+        if (!agent) {
+            return new Error("Not found");
+        }
         const { language, clean } = data.config
-        if (clean || (language && language !== agent.manager.settings.languages[0])) {
+        if (clean || (language && (language !== agent.manager.settings.languages[0]))) {
             this.createAgent(agentId, language)
             agent = this.agents[agentId]
         }
@@ -104,8 +99,9 @@ class NlpjsTrainer {
     process(agentId, text) {
         return new Promise((resolve, reject) => {
             const agent = this.agents[agentId]
-            if (!agent)
-                return reject(`Not found`)
+            if (!agent) {
+                return reject(`Not found`);
+            }
             const language = agent.manager.settings.languages[0];
             return resolve(agent.manager.process(language, text))
         })
