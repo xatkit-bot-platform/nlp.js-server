@@ -5,8 +5,8 @@
     "description": "an NLP server API to create/train agents and get matched intents from user messages.",
     "version": "0.1",
     "contact": {
-      "name": "SOM research lab",
-      "url": "https://som-research.uoc.edu/"
+      "name": "Xatkit",
+      "url": "https://xatkit.com/"
     }
   },
   "servers": [
