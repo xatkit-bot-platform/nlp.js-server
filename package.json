@@ -11,7 +11,6 @@
     "type": "git",
     "url": "git+https://github.com/xatkit-bot-platform/nlp.js-server.git"
   },
-  "author": "Hamza Ed-douibi",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/xatkit-bot-platform/nlp.js-server/issues"
@@ -22,7 +21,6 @@
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "node-nlp": "^4.11.2",
-    "swagger-ui-express": "^4.1.4",
-    "uuid": "^8.3.0"
+    "swagger-ui-express": "^4.1.4"
   }
 }
