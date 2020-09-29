@@ -18,7 +18,11 @@ router.get('/agent/:agentId', (req, res) => {
     if (!agent) {
         res.status(404).json({message: `NLP agent with ID ${agentId} not found`});
     } else {
-        res.json(agent);
+        res.json(
+            {
+                status : agent.status,
+                model : JSON.parse(agent.manager.export(true))
+            });
     }
 })
 
