@@ -93,7 +93,11 @@ class NlpjsTrainer {
         }
         this.addEntities(agent.manager, data)
         this.addIntents(agent.manager, data)
-        this.trainProcess(agent);
+        agent.manager.train().then(() => {
+            agent.status = 'ready'
+            console.log(agent.manager.export())
+        })
+        // this.trainProcess(agent);
     }
 
     process(agentId, text) {
