@@ -22,11 +22,28 @@ jobs:
       run: npm run build --if-present
  #   - name: NPM test
  #     run: npm test
-    - name: Stopping NLP.js service
+    - name: Stop NLP.js service
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
         script: systemctl stop nlp-js.service
+    - name: Uploading new version
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: .
+        remote: /home/gdaniel/repositories/nlp.js-server
+        host: ${{ secrets.CD_HOST }}
+        username: ${{ secrets.CD_USERNAME }}
+        password: ${{ secrets.CD_PASSWORD }}
+    - name: Restart NLP.js service
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.CD_HOST }}
+        username: ${{ secrets.CD_USERNAME }}
+        password: ${{ secrets.CD_PASSWORD }}
+        script: systemctl start nlp-js.service
+        
+        
         
