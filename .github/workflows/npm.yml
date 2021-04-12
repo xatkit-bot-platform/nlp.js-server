@@ -16,7 +16,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: NPM build
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: NPM Install
+      run: npm ci
+    - name: NPM Build
+      run: npm run build --if-present
+    - name: NPM test
+      run: npm test
