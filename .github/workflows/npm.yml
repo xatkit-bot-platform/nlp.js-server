@@ -28,5 +28,5 @@ jobs:
         host: ${{ secrets.CD_HOST }}
         username: gdaniel
         password: ${{ secrets.CD_PASSWORD }}
-        command: sudo systemctl stop nlp-js.service
+        script: systemctl stop nlp-js.service
         
