@@ -26,7 +26,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.CD_HOST }}
-        username: gdaniel
+        username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
         script: systemctl stop nlp-js.service
         
