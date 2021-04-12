@@ -39,7 +39,7 @@ jobs:
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
-        rm-remote: true
+        rmRemote: true
     - name: Unpackage tar
       uses: appleboy/ssh-action@master
       with:
