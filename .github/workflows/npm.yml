@@ -23,10 +23,10 @@ jobs:
  #   - name: NPM test
  #     run: npm test
     - name: Stopping NLP.js service
-      uses: garygrossgarten/github-action-ssh@release
+      uses: appleboy/ssh-action@master
       with:
-        command: sudo systemctl stop nlp-js.service
         host: ${{ secrets.CD_HOST }}
         username: gdaniel
         password: ${{ secrets.CD_PASSWORD }}
+        command: sudo systemctl stop nlp-js.service
         
