@@ -23,7 +23,7 @@ jobs:
  #   - name: NPM test
  #     run: npm test
     - name: Build tar
-      run: tar -czvf ../nlp.js-server.tar.gz .
+      run: tar -czvf /tmp/nlp.js-server.tar.gz .
     - name: Stop NLP.js service
       uses: appleboy/ssh-action@master
       with:
@@ -34,7 +34,7 @@ jobs:
     - name: Uploading new version
       uses: garygrossgarten/github-action-scp@release
       with:
-        local: ../nlp.js-server.tar.gz
+        local: /tmp/nlp.js-server.tar.gz
         remote: /home/gdaniel/repositories/nlp.js-server
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
