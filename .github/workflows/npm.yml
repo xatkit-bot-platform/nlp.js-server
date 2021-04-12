@@ -46,7 +46,7 @@ jobs:
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
-        script: rm -rf /home/gdaniel/repositories/nlp.js-server && tar -xvf /tmp/nlp.js-server.tar.gz -C /home/gdaniel/repositories/nlp.js-server
+        script: rm -rf /home/gdaniel/repositories/nlp.js-server/* && tar -xvf /tmp/nlp.js-server.tar.gz -C /home/gdaniel/repositories/nlp.js-server
     - name: Restart NLP.js service
       uses: appleboy/ssh-action@master
       with:
