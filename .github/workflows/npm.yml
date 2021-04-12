@@ -35,7 +35,7 @@ jobs:
       uses: garygrossgarten/github-action-scp@release
       with:
         local: /tmp/nlp.js-server.tar.gz
-        remote: /home/gdaniel/repositories/nlp.js-server/nlp.js-server.tar.gz
+        remote: /tmp/nlp.js-server.tar.gz
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
@@ -46,7 +46,7 @@ jobs:
         host: ${{ secrets.CD_HOST }}
         username: ${{ secrets.CD_USERNAME }}
         password: ${{ secrets.CD_PASSWORD }}
-        script: tar -xvf nlp.js-server.tar.gz
+        script: rm -rf /home/gdaniel/repositories/nlp.js-server && tar -xvf /tmp/nlp.js-server.tar.gz -C /home/gdaniel/repositories/nlp.js-server
     - name: Restart NLP.js service
       uses: appleboy/ssh-action@master
       with:
