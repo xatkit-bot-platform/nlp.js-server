@@ -8,7 +8,7 @@ A server exposing a REST API for [NLP.js](https://github.com/axa-group/nlp.js).
 **Requirement**: 
 * Docker
 
-The NLP.js server app is available at Docker hub. Execute the commands below to download it and run it.
+The NLP.js server app is [available at Docker hub](https://hub.docker.com/r/xatkitdocker/xatkit-nlp.js-server). Execute the commands below to download it and run it.
 ```
 docker pull xatkitdocker/xatkit-nlp.js-server:latest
 docker run -p 8080:8080 -d xatkitdocker/xatkit-nlp.js-server
